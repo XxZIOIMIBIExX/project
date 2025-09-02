@@ -21,7 +21,8 @@ data class CasaOSConfig(
 data class ConnectionStatus(
     val isConnected: Boolean = false,
     val isConnecting: Boolean = false,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val message: String? = null
 )
 
 data class LoginRequest(

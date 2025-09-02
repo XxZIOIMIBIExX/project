@@ -1,11 +1,16 @@
 package com.casaos.client.network
 
+import android.util.Log
 import com.casaos.client.data.CasaOSConfig
 import com.casaos.client.data.ConnectionStatus
 import com.casaos.client.data.LoginRequest
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
@@ -36,10 +41,17 @@ class NetworkManager {
         val okHttpClient = createOkHttpClient(config)
         val baseUrl = config.getBaseUrl()
         
+        // Create lenient Gson instance
+        val gson = GsonBuilder()
+            .setLenient()
+            .serializeNulls()
+            .create()
+        
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(ScalarsConverterFactory.create()) // For plain text responses
+            .addConverterFactory(GsonConverterFactory.create(gson)) // For JSON responses
             .build()
             
         apiService = retrofit.create(CasaOSApiService::class.java)
@@ -51,6 +63,13 @@ class NetworkManager {
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
+        
+        // Add logging interceptor for debugging
+        val loggingInterceptor = HttpLoggingInterceptor { message ->
+            Log.d("CasaOS-Network", message)
+        }
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        builder.addInterceptor(loggingInterceptor)
         
         // Add auth token if available
         authToken?.let { token ->
@@ -93,27 +112,59 @@ class NetworkManager {
                 errorMessage = "Invalid configuration"
             )
             
-            // Try to check health endpoint first
-            val healthResponse = service.checkHealth()
-            if (healthResponse.isSuccessful) {
-                return ConnectionStatus(isConnected = true)
+            // Try the home page first (most likely to work)
+            try {
+                val homeResponse = service.getHomePage()
+                if (homeResponse.isSuccessful) {
+                    val body = homeResponse.body()
+                    // Check if response looks like CasaOS (contains typical elements)
+                    if (body != null && (body.contains("CasaOS") || body.contains("casa") || 
+                        body.contains("<!DOCTYPE html") || body.contains("<html"))) {
+                        return ConnectionStatus(isConnected = true, message = "Connected to CasaOS web interface")
+                    }
+                    return ConnectionStatus(isConnected = true, message = "Server responding")
+                }
+            } catch (e: Exception) {
+                // Home page failed, try health endpoint
             }
             
-            // If health endpoint fails, try the home page
-            val homeResponse = service.getHomePage()
-            if (homeResponse.isSuccessful) {
-                return ConnectionStatus(isConnected = true)
+            // Try health endpoint as fallback
+            try {
+                val healthResponse = service.checkHealth()
+                if (healthResponse.isSuccessful) {
+                    return ConnectionStatus(isConnected = true, message = "Health endpoint responding")
+                }
+            } catch (e: Exception) {
+                // Health endpoint also failed
             }
             
-            ConnectionStatus(
-                isConnected = false,
-                errorMessage = "Server responded with error: ${healthResponse.code()}"
-            )
+            // Try a simple ping to see if server is reachable
+            try {
+                val webService = webService ?: return ConnectionStatus(
+                    isConnected = false,
+                    errorMessage = "Service not initialized"
+                )
+                
+                val pingResponse = webService.getPage(config.getBaseUrl())
+                if (pingResponse.isSuccessful) {
+                    return ConnectionStatus(isConnected = true, message = "Server reachable")
+                } else {
+                    return ConnectionStatus(
+                        isConnected = false,
+                        errorMessage = "Server responded with HTTP ${pingResponse.code()}"
+                    )
+                }
+            } catch (e: Exception) {
+                return ConnectionStatus(
+                    isConnected = false,
+                    errorMessage = "Connection failed: ${e.message}"
+                )
+            }
             
         } catch (e: Exception) {
             ConnectionStatus(
                 isConnected = false,
-                errorMessage = e.message ?: "Unknown error"
+                errorMessage = "Connection error: ${e.message}"
             )
         }
     }

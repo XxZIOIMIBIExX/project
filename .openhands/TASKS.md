@@ -18,4 +18,6 @@ Created comprehensive demo documentation, build script, and project overview. Ap
 Fixed XML namespace issues (android-auto -> res-auto), deprecated method warnings, and created comprehensive build instructions. App now builds successfully.
 9. ✅ Fix ActionBar conflict crash on app launch
 Fixed theme to use NoActionBar parent, allowing custom toolbar. Changed Theme.Material3.DayNight to Theme.Material3.DayNight.NoActionBar in both light and dark themes.
+10. ✅ Fix JsonReader.setLenient JSON parsing error in connection testing
+Fixed JSON parsing issues by making Gson lenient, adding ScalarsConverterFactory for HTML responses, improving connection testing with multiple fallbacks, and adding HTTP logging for debugging.
 
