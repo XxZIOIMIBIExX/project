@@ -1,16 +1,23 @@
 # CasaOS Android Client
 
-An Android application that connects to CasaOS servers and displays the web interface in a WebView.
+A native Android application for managing CasaOS servers with Material Design 3 UI.
 
 ## Features
 
-- **WebView Integration**: Displays the CasaOS web interface natively in the app
-- **Secure Configuration**: Encrypted storage of server credentials using Android Security Crypto
-- **Connection Testing**: Built-in connection testing to verify server accessibility
-- **Authentication Support**: Handles CasaOS authentication with username/password
-- **HTTPS Support**: Supports both HTTP and HTTPS connections (including self-signed certificates)
-- **Material Design**: Modern Material 3 design with light/dark theme support
-- **Offline Handling**: Graceful handling of connection errors with retry functionality
+### ✅ Completed
+- **Native UI Architecture**: Complete transformation from WebView to native Android UI
+- **Material Design 3**: Modern, consistent UI following Google's design guidelines
+- **Bottom Navigation**: 4-tab structure (Status, Apps, Files, Settings)
+- **Login System**: Native login screen with JWT authentication
+- **Status Monitoring**: CPU, RAM, and disk usage monitoring with progress bars
+- **App Management**: List, start, stop, restart CasaOS applications
+- **API Integration**: Comprehensive CasaOS API support (v1/sys, v2/app_management, v3/file)
+- **Secure Storage**: Encrypted storage for authentication tokens and settings
+
+### 🔄 In Progress
+- **File Manager**: Complete file browser with grid/list view toggle
+- **Settings Panel**: Server configuration and app preferences
+- **WebSocket Terminal**: SSH terminal access for apps and system
 
 ## Setup
 
@@ -44,13 +51,32 @@ An Android application that connects to CasaOS servers and displays the web inte
 
 ## Architecture
 
+### 📱 App Structure
+
+```
+LoginActivity (Launcher)
+├── Server connection setup
+├── JWT authentication
+└── → MainActivity (on successful login)
+
+MainActivity (Bottom Navigation)
+├── StatusFragment - System monitoring
+├── AppsFragment - Application management  
+├── FilesFragment - File browser (placeholder)
+└── SettingsFragment - Configuration (placeholder)
+```
+
 ### Key Components
 
-- **MainActivity**: Main screen with WebView and connection management
-- **SettingsActivity/SettingsFragment**: Configuration screen for server settings
-- **NetworkManager**: Handles API communication and connection testing
+- **LoginActivity**: Native login screen with server configuration
+- **MainActivity**: Main app with bottom navigation and fragment management
+- **StatusFragment**: Real-time system monitoring with progress bars
+- **AppsFragment**: CasaOS application management with start/stop controls
+- **FilesFragment**: File browser (placeholder implementation)
+- **SettingsFragment**: App configuration (placeholder implementation)
+- **NetworkManager**: Comprehensive CasaOS API communication
 - **SettingsManager**: Secure storage and retrieval of configuration data
-- **CasaOSApiService**: Retrofit interface for CasaOS API endpoints
+- **CasaOSApiService**: Retrofit interface for all CasaOS API endpoints
 
 ### Security Features
 
@@ -69,11 +95,28 @@ The app supports various CasaOS deployment scenarios:
 
 ## CasaOS API Integration
 
-The app integrates with CasaOS through:
+The app integrates with CasaOS APIs:
+- **Authentication**: `/v1/auth/login` - JWT token-based authentication
+- **System Info**: `/v1/sys/hardware` - CPU, RAM, disk monitoring
+- **App Management**: `/v2/app_management/*` - List, control applications
+- **File Operations**: `/v3/file/*` - File browser and management
+- **Terminal Access**: `/v1/sys/wsssh` - WebSocket SSH terminal
 
-1. **Health Check**: Tests server availability via `/v1/sys/health` or home page
-2. **Authentication**: Login via `/v1/auth/login` endpoint (if credentials provided)
-3. **Web Interface**: Loads the full CasaOS web interface in WebView
+### 🔧 Technical Stack
+
+- **Language**: Kotlin
+- **UI Framework**: Material Design 3
+- **Networking**: Retrofit 2 + OkHttp
+- **JSON Parsing**: Gson with lenient configuration
+- **Security**: Android Security Crypto for token storage
+- **Architecture**: MVVM with Fragment-based navigation
+
+### 📦 Build Information
+
+- **Target SDK**: Android 34 (API Level 34)
+- **Min SDK**: Android 24 (API Level 24)
+- **Build Tools**: Gradle 8.2, Java 17
+- **APK Size**: ~7.2MB (debug build)
 
 ## Troubleshooting
 

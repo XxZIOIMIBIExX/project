@@ -22,14 +22,16 @@ CasaOS settings management and terminal functionality using /v1/sys/wsssh WebSoc
 Added all discovered API endpoints, proper JWT handling, WebSocket support for terminal
 11. ✅ Complete gradle build verification and fix compilation errors
 Fixed all compilation errors, successful APK build (7.2MB), installed Android SDK and Gradle 8.2
-12. ⏳ Implement full FilesFragment with file manager functionality
+12. ✅ Fix app startup crash and context initialization issues
+Fixed SettingsManager initialization in LoginActivity and MainActivity - moved to onCreate() to avoid null context
+13. ⏳ Implement full FilesFragment with file manager functionality
 Replace placeholder with actual file listing, grid/list view toggle, file operations
-13. ⏳ Implement full SettingsFragment functionality
+14. ⏳ Implement full SettingsFragment functionality
 Add server configuration, app preferences, about section
-14. ⏳ Add WebSocket support for terminal functionality
+15. ⏳ Add WebSocket support for terminal functionality
 Implement WebSocket client for SSH terminal access in apps and settings
-15. ⏳ Test and debug the complete native UI implementation
+16. ⏳ Test and debug the complete native UI implementation
 Test API integration, data binding, error handling, user flows
-16. ⏳ Implement actual API integration and data binding
+17. ⏳ Implement actual API integration and data binding
 Connect UI components to real API data, handle loading states, error scenarios
 

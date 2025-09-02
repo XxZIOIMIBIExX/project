@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var toolbar: MaterialToolbar
     private lateinit var bottomNavigation: BottomNavigationView
     
-    private val settingsManager = SettingsManager.getInstance(this)
+    private lateinit var settingsManager: SettingsManager
     
     // Fragment instances
     private val statusFragment = StatusFragment()
@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        settingsManager = SettingsManager.getInstance(this)
         
         // Check if user is logged in
         if (!settingsManager.isLoggedIn()) {

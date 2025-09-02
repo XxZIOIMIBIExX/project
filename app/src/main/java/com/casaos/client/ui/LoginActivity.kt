@@ -32,11 +32,13 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var passwordLayout: TextInputLayout
     
     private val networkManager = NetworkManager.getInstance()
-    private val settingsManager = SettingsManager.getInstance(this)
+    private lateinit var settingsManager: SettingsManager
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        
+        settingsManager = SettingsManager.getInstance(this)
         
         initViews()
         loadSavedSettings()
