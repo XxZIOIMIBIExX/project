@@ -16,4 +16,6 @@ Added comprehensive error handling, connection status display, and user-friendly
 Created comprehensive demo documentation, build script, and project overview. App is ready for testing and deployment.
 8. ✅ Fix XML namespace and build errors
 Fixed XML namespace issues (android-auto -> res-auto), deprecated method warnings, and created comprehensive build instructions. App now builds successfully.
+9. ✅ Fix ActionBar conflict crash on app launch
+Fixed theme to use NoActionBar parent, allowing custom toolbar. Changed Theme.Material3.DayNight to Theme.Material3.DayNight.NoActionBar in both light and dark themes.
 
