@@ -55,12 +55,34 @@ class SettingsManager(private val context: Context) {
                sharedPreferences.getString(KEY_SERVER_URL, "")?.isNotBlank() == true
     }
     
+    fun setLoggedIn(loggedIn: Boolean) {
+        sharedPreferences.edit().putBoolean(KEY_LOGGED_IN, loggedIn).apply()
+    }
+    
+    fun isLoggedIn(): Boolean {
+        return sharedPreferences.getBoolean(KEY_LOGGED_IN, false) && hasConfig()
+    }
+    
+    fun saveAuthToken(token: String) {
+        sharedPreferences.edit().putString(KEY_AUTH_TOKEN, token).apply()
+    }
+    
+    fun getAuthToken(): String? {
+        return sharedPreferences.getString(KEY_AUTH_TOKEN, null)
+    }
+    
+    fun clearAuthToken() {
+        sharedPreferences.edit().remove(KEY_AUTH_TOKEN).apply()
+    }
+    
     companion object {
         private const val KEY_SERVER_URL = "server_url"
         private const val KEY_SERVER_PORT = "server_port"
         private const val KEY_USE_HTTPS = "use_https"
         private const val KEY_USERNAME = "username"
         private const val KEY_PASSWORD = "password"
+        private const val KEY_LOGGED_IN = "logged_in"
+        private const val KEY_AUTH_TOKEN = "auth_token"
         
         @Volatile
         private var INSTANCE: SettingsManager? = null

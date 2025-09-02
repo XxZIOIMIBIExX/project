@@ -1,0 +1,38 @@
+[
+    {
+        "merged": "com.casaos.client.app-mergeReleaseResources-42:/layout/fragment_settings.xml",
+        "source": "com.casaos.client.app-main-44:/layout/fragment_settings.xml"
+    },
+    {
+        "merged": "com.casaos.client.app-mergeReleaseResources-42:/layout/activity_main_new.xml",
+        "source": "com.casaos.client.app-main-44:/layout/activity_main_new.xml"
+    },
+    {
+        "merged": "com.casaos.client.app-mergeReleaseResources-42:/layout/activity_main.xml",
+        "source": "com.casaos.client.app-main-44:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.casaos.client.app-mergeReleaseResources-42:/layout/fragment_files.xml",
+        "source": "com.casaos.client.app-main-44:/layout/fragment_files.xml"
+    },
+    {
+        "merged": "com.casaos.client.app-mergeReleaseResources-42:/layout/activity_settings.xml",
+        "source": "com.casaos.client.app-main-44:/layout/activity_settings.xml"
+    },
+    {
+        "merged": "com.casaos.client.app-mergeReleaseResources-42:/layout/fragment_status.xml",
+        "source": "com.casaos.client.app-main-44:/layout/fragment_status.xml"
+    },
+    {
+        "merged": "com.casaos.client.app-mergeReleaseResources-42:/layout/activity_login.xml",
+        "source": "com.casaos.client.app-main-44:/layout/activity_login.xml"
+    },
+    {
+        "merged": "com.casaos.client.app-mergeReleaseResources-42:/layout/item_app.xml",
+        "source": "com.casaos.client.app-main-44:/layout/item_app.xml"
+    },
+    {
+        "merged": "com.casaos.client.app-mergeReleaseResources-42:/layout/fragment_apps.xml",
+        "source": "com.casaos.client.app-main-44:/layout/fragment_apps.xml"
+    }
+]

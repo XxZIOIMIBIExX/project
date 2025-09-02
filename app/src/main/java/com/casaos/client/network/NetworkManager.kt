@@ -1,9 +1,8 @@
 package com.casaos.client.network
 
 import android.util.Log
-import com.casaos.client.data.CasaOSConfig
-import com.casaos.client.data.ConnectionStatus
-import com.casaos.client.data.LoginRequest
+import com.casaos.client.data.*
+import retrofit2.Response
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -114,7 +113,7 @@ class NetworkManager {
             
             // Try the home page first (most likely to work)
             try {
-                val homeResponse = service.getHomePage()
+                val homeResponse = apiService!!.getHomePage()
                 if (homeResponse.isSuccessful) {
                     val body = homeResponse.body()
                     // Check if response looks like CasaOS (contains typical elements)
@@ -130,7 +129,7 @@ class NetworkManager {
             
             // Try health endpoint as fallback
             try {
-                val healthResponse = service.checkHealth()
+                val healthResponse = apiService!!.getSystemHealth()
                 if (healthResponse.isSuccessful) {
                     return ConnectionStatus(isConnected = true, message = "Health endpoint responding")
                 }
@@ -184,19 +183,19 @@ class NetworkManager {
             }
             
             val loginRequest = LoginRequest(config.username, config.password)
-            val response = service.login(loginRequest)
+            val response = apiService!!.login(loginRequest)
             
             if (response.isSuccessful) {
-                val loginResponse = response.body()
-                if (loginResponse?.success == true) {
-                    authToken = loginResponse.token
+                val apiResponse = response.body()
+                if (apiResponse?.success == true && apiResponse.data?.token != null) {
+                    authToken = apiResponse.data.token
                     // Recreate services with auth token
                     createServices(config)
                     return ConnectionStatus(isConnected = true)
                 } else {
                     return ConnectionStatus(
                         isConnected = false,
-                        errorMessage = loginResponse?.message ?: "Login failed"
+                        errorMessage = apiResponse?.message ?: "Login failed"
                     )
                 }
             } else {
@@ -216,6 +215,28 @@ class NetworkManager {
     
     fun isConfigured(): Boolean {
         return currentConfig?.isValid() == true
+    }
+    
+    // App Management Methods
+    suspend fun getApps(): Response<ApiResponse<List<AppInfo>>> {
+        return apiService!!.getApps()
+    }
+    
+    suspend fun startApp(appId: String): Response<ApiResponse<Unit>> {
+        return apiService!!.startApp(appId)
+    }
+    
+    suspend fun stopApp(appId: String): Response<ApiResponse<Unit>> {
+        return apiService!!.stopApp(appId)
+    }
+    
+    suspend fun restartApp(appId: String): Response<ApiResponse<Unit>> {
+        return apiService!!.restartApp(appId)
+    }
+    
+    // System Information Methods
+    suspend fun getSystemInfo(): Response<ApiResponse<SystemInfo>> {
+        return apiService!!.getSystemInfo()
     }
     
     companion object {

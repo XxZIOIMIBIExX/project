@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="@string/server_settings">
+
+        <EditTextPreference
+            android:key="server_url"
+            android:title="@string/server_url"
+            android:summary="@string/server_url_summary"
+            android:inputType="textUri"
+            android:selectAllOnFocus="true"
+            android:singleLine="true" />
+
+        <EditTextPreference
+            android:key="server_port"
+            android:title="@string/server_port"
+            android:summary="@string/server_port_summary"
+            android:inputType="number"
+            android:defaultValue="80"
+            android:selectAllOnFocus="true"
+            android:singleLine="true" />
+
+        <SwitchPreferenceCompat
+            android:key="use_https"
+            android:title="@string/use_https"
+            android:summary="@string/use_https_summary"
+            android:defaultValue="false" />
+
+        <EditTextPreference
+            android:key="username"
+            android:title="@string/username"
+            android:summary="@string/username_summary"
+            android:inputType="textNoSuggestions"
+            android:selectAllOnFocus="true"
+            android:singleLine="true" />
+
+        <EditTextPreference
+            android:key="password"
+            android:title="@string/password"
+            android:summary="@string/password_summary"
+            android:inputType="textPassword"
+            android:selectAllOnFocus="true"
+            android:singleLine="true" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
