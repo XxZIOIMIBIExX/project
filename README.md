@@ -18,6 +18,7 @@ An Android application that connects to CasaOS servers and displays the web inte
 
 - Android Studio Arctic Fox or later
 - Android SDK API level 24 (Android 7.0) or higher
+- Java Development Kit (JDK 8 or later)
 - A running CasaOS instance
 
 ### Building the App
@@ -26,6 +27,8 @@ An Android application that connects to CasaOS servers and displays the web inte
 2. Open the project in Android Studio
 3. Sync the project with Gradle files
 4. Build and run the app on your device or emulator
+
+**Note**: If you encounter build errors related to XML namespaces, see the [TROUBLESHOOTING.md](TROUBLESHOOTING.md) file for solutions.
 
 ### Configuration
 
