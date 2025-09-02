@@ -227,10 +227,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
     
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (binding.webView.canGoBack() && binding.webView.visibility == View.VISIBLE) {
             binding.webView.goBack()
         } else {
+            @Suppress("DEPRECATION")
             super.onBackPressed()
         }
     }
